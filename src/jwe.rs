@@ -23,6 +23,8 @@ pub fn sign_and_encrypt_attributes(
     let mut sig_payload = JwtPayload::new();
     sig_payload.set_subject("id-contact-attributes");
     sig_payload.set_claim("attributes", Some(serde_json::to_value(attributes)?))?;
+    sig_payload.set_issued_at(&std::time::SystemTime::now());
+    sig_payload.set_expires_at(&(std::time::SystemTime::now() + std::time::Duration::from_secs(5*60)));
 
     let jws = jwt::encode_with_signer(&sig_payload, &sig_header, signer)?;
 
