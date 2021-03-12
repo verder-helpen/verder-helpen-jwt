@@ -2,11 +2,11 @@
 
 mod config;
 mod error;
-mod jwe;
+mod jwt;
 
 pub use config::{EncryptionKeyConfig, SignKeyConfig};
 pub use error::Error;
-pub use jwe::{decrypt_and_verify_attributes, sign_and_encrypt_attributes};
+pub use jwt::{decrypt_and_verify_auth_result, sign_and_encrypt_auth_result};
 
 //
 // Tests
@@ -19,6 +19,7 @@ mod tests {
     use std::collections::HashMap;
     use std::convert::TryFrom;
 
+    use id_contact_proto::{AuthResult, AuthStatus};
     use josekit::{
         jwe::{JweDecrypter, JweEncrypter},
         jws::{JwsSigner, JwsVerifier},
@@ -109,13 +110,44 @@ mod tests {
         test_attributes.insert("A".to_string(), "B".to_string());
         test_attributes.insert("C".to_string(), "D".to_string());
 
+        // failed
+        let in_result = AuthResult {
+            status: AuthStatus::Failed,
+            attributes: None,
+            session_url: None,
+        };
         let jwe =
-            sign_and_encrypt_attributes(&test_attributes, signer.as_ref(), encrypter.as_ref())
+            sign_and_encrypt_auth_result(&in_result, signer.as_ref(), encrypter.as_ref())
                 .unwrap();
+        let out_result =
+            decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
+        assert_eq!(in_result, out_result);
 
-        let out_attributes =
-            decrypt_and_verify_attributes(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
-        assert_eq!(test_attributes, out_attributes);
+        // succes+attributes
+        let in_result = AuthResult {
+            status: AuthStatus::Succes,
+            attributes: Some(test_attributes.clone()),
+            session_url: None,
+        };
+        let jwe =
+            sign_and_encrypt_auth_result(&in_result, signer.as_ref(), encrypter.as_ref())
+                .unwrap();
+        let out_result =
+            decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
+        assert_eq!(in_result, out_result);
+
+        // succes+attributes+session_url
+        let in_result = AuthResult {
+            status: AuthStatus::Succes,
+            attributes: Some(test_attributes.clone()),
+            session_url: Some("https://example.com".to_string()),
+        };
+        let jwe =
+            sign_and_encrypt_auth_result(&in_result, signer.as_ref(), encrypter.as_ref())
+                .unwrap();
+        let out_result =
+            decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
+        assert_eq!(in_result, out_result);
     }
 
     #[test]
@@ -137,12 +169,43 @@ mod tests {
         test_attributes.insert("A".to_string(), "B".to_string());
         test_attributes.insert("C".to_string(), "D".to_string());
 
+        // failed
+        let in_result = AuthResult {
+            status: AuthStatus::Failed,
+            attributes: None,
+            session_url: None,
+        };
         let jwe =
-            sign_and_encrypt_attributes(&test_attributes, signer.as_ref(), encrypter.as_ref())
+            sign_and_encrypt_auth_result(&in_result, signer.as_ref(), encrypter.as_ref())
                 .unwrap();
+        let out_result =
+            decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
+        assert_eq!(in_result, out_result);
 
-        let out_attributes =
-            decrypt_and_verify_attributes(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
-        assert_eq!(test_attributes, out_attributes);
+        // succes+attributes
+        let in_result = AuthResult {
+            status: AuthStatus::Succes,
+            attributes: Some(test_attributes.clone()),
+            session_url: None,
+        };
+        let jwe =
+            sign_and_encrypt_auth_result(&in_result, signer.as_ref(), encrypter.as_ref())
+                .unwrap();
+        let out_result =
+            decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
+        assert_eq!(in_result, out_result);
+
+        // succes+attributes+session_url
+        let in_result = AuthResult {
+            status: AuthStatus::Succes,
+            attributes: Some(test_attributes.clone()),
+            session_url: Some("https://example.com".to_string()),
+        };
+        let jwe =
+            sign_and_encrypt_auth_result(&in_result, signer.as_ref(), encrypter.as_ref())
+                .unwrap();
+        let out_result =
+            decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
+        assert_eq!(in_result, out_result);
     }
 }
