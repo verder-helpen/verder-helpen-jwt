@@ -1,10 +1,6 @@
 use std::collections::HashMap;
 
-use josekit::{
-    jwe::{JweDecrypter, JweEncrypter, JweHeader},
-    jws::{JwsHeader, JwsSigner, JwsVerifier},
-    jwt::{self, JwtPayload},
-};
+use josekit::{jwe::{JweDecrypter, JweEncrypter, JweHeader}, jws::{JwsHeader, JwsSigner, JwsVerifier}, jwt::{self, JwtPayload, JwtPayloadValidator}};
 
 use id_contact_proto::{AuthResult, AuthStatus};
 
@@ -63,6 +59,9 @@ pub fn decrypt_and_verify_auth_result(
         .as_str()
         .ok_or(Error::InvalidStructure)?;
     let decoded_jws = jwt::decode_with_verifier(jws, validator)?.0;
+    let mut validator = JwtPayloadValidator::new();
+    validator.set_base_time(std::time::SystemTime::now());
+    validator.validate(&decoded_jws)?;
     let status = decoded_jws
         .claim("status")
         .ok_or(Error::InvalidStructure)?;
