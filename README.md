@@ -1,3 +1,3 @@
-# ID-Contact-jwe
+# ID Contact JWT `id-contact-jwt`
 
-This library contains rust utilities for encoding and decoding ID contact attribute jwe's, and for dealing with the configuration neccessary for handling the keys used in this process.
+This library contains Rust utilities for encoding and decoding ID Contact attribute JWTs, and for dealing with the configuration necessary for handling the keys used in this process.
