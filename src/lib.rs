@@ -6,7 +6,7 @@ mod jwt;
 
 pub use config::{EncryptionKeyConfig, SignKeyConfig};
 pub use error::Error;
-pub use jwt::{decrypt_and_verify_auth_result, sign_and_encrypt_auth_result};
+pub use jwt::{decrypt_and_verify_auth_result, dangerous_decrypt_auth_result_without_verifying_expiration, sign_and_encrypt_auth_result};
 
 //
 // Tests

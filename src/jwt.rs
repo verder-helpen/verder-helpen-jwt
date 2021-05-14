@@ -46,11 +46,11 @@ pub fn sign_and_encrypt_auth_result(
     )?)
 }
 
-/// Decrypt and verify a given jwe to extract the contained attributes.
-pub fn decrypt_and_verify_auth_result(
+fn raw_decrypt_and_verify_auth_result(
     jwe: &str,
     validator: &dyn JwsVerifier,
     decrypter: &dyn JweDecrypter,
+    do_time_validation: bool,
 ) -> Result<AuthResult, Error> {
     let decoded_jwe = jwt::decode_with_decrypter(jwe, decrypter)?.0;
     let jws = decoded_jwe
@@ -59,9 +59,11 @@ pub fn decrypt_and_verify_auth_result(
         .as_str()
         .ok_or(Error::InvalidStructure)?;
     let decoded_jws = jwt::decode_with_verifier(jws, validator)?.0;
-    let mut validator = JwtPayloadValidator::new();
-    validator.set_base_time(std::time::SystemTime::now());
-    validator.validate(&decoded_jws)?;
+    if do_time_validation {
+      let mut validator = JwtPayloadValidator::new();
+      validator.set_base_time(std::time::SystemTime::now());
+      validator.validate(&decoded_jws)?;
+    }
     let status = decoded_jws
         .claim("status")
         .ok_or(Error::InvalidStructure)?;
@@ -84,4 +86,21 @@ pub fn decrypt_and_verify_auth_result(
         attributes,
         session_url,
     })
+}
+
+pub fn dangerous_decrypt_auth_result_without_verifying_expiration(
+    jwe: &str,
+    validator: &dyn JwsVerifier,
+    decrypter: &dyn JweDecrypter,
+) -> Result<AuthResult, Error> {
+    raw_decrypt_and_verify_auth_result(jwe, validator, decryptor, false)
+}
+
+/// Decrypt and verify a given jwe to extract the contained attributes.
+pub fn decrypt_and_verify_auth_result(
+    jwe: &str,
+    validator: &dyn JwsVerifier,
+    decrypter: &dyn JweDecrypter,
+) -> Result<AuthResult, Error> {
+    raw_decrypt_and_verify_auth_result(jwe, validator, decryptor, true)
 }
