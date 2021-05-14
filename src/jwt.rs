@@ -93,7 +93,7 @@ pub fn dangerous_decrypt_auth_result_without_verifying_expiration(
     validator: &dyn JwsVerifier,
     decrypter: &dyn JweDecrypter,
 ) -> Result<AuthResult, Error> {
-    raw_decrypt_and_verify_auth_result(jwe, validator, decryptor, false)
+    raw_decrypt_and_verify_auth_result(jwe, validator, decrypter, false)
 }
 
 /// Decrypt and verify a given jwe to extract the contained attributes.
@@ -102,5 +102,5 @@ pub fn decrypt_and_verify_auth_result(
     validator: &dyn JwsVerifier,
     decrypter: &dyn JweDecrypter,
 ) -> Result<AuthResult, Error> {
-    raw_decrypt_and_verify_auth_result(jwe, validator, decryptor, true)
+    raw_decrypt_and_verify_auth_result(jwe, validator, decrypter, true)
 }
