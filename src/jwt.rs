@@ -1,6 +1,10 @@
 use std::collections::HashMap;
 
-use josekit::{jwe::{JweDecrypter, JweEncrypter, JweHeader}, jws::{JwsHeader, JwsSigner, JwsVerifier}, jwt::{self, JwtPayload, JwtPayloadValidator}};
+use josekit::{
+    jwe::{JweDecrypter, JweEncrypter, JweHeader},
+    jws::{JwsHeader, JwsSigner, JwsVerifier},
+    jwt::{self, JwtPayload, JwtPayloadValidator},
+};
 
 use id_contact_proto::{AuthResult, AuthStatus};
 
@@ -28,7 +32,8 @@ pub fn sign_and_encrypt_auth_result(
         sig_payload.set_claim("session_url", Some(serde_json::to_value(session_url)?))?;
     }
     sig_payload.set_issued_at(&std::time::SystemTime::now());
-    sig_payload.set_expires_at(&(std::time::SystemTime::now() + std::time::Duration::from_secs(5*60)));
+    sig_payload
+        .set_expires_at(&(std::time::SystemTime::now() + std::time::Duration::from_secs(5 * 60)));
 
     let jws = jwt::encode_with_signer(&sig_payload, &sig_header, signer)?;
 
@@ -60,22 +65,20 @@ fn raw_decrypt_and_verify_auth_result(
         .ok_or(Error::InvalidStructure)?;
     let decoded_jws = jwt::decode_with_verifier(jws, validator)?.0;
     if do_time_validation {
-      let mut validator = JwtPayloadValidator::new();
-      validator.set_base_time(std::time::SystemTime::now());
-      validator.validate(&decoded_jws)?;
+        let mut validator = JwtPayloadValidator::new();
+        validator.set_base_time(std::time::SystemTime::now());
+        validator.validate(&decoded_jws)?;
     }
-    let status = decoded_jws
-        .claim("status")
-        .ok_or(Error::InvalidStructure)?;
+    let status = decoded_jws.claim("status").ok_or(Error::InvalidStructure)?;
     let status = serde_json::from_value::<AuthStatus>(status.clone())?;
-    let attributes = decoded_jws
-        .claim("attributes");
+    let attributes = decoded_jws.claim("attributes");
     let attributes = match attributes {
-        Some(raw_attributes) => Some(serde_json::from_value::<HashMap<String, String>>(raw_attributes.clone())?),
+        Some(raw_attributes) => Some(serde_json::from_value::<HashMap<String, String>>(
+            raw_attributes.clone(),
+        )?),
         None => None,
     };
-    let session_url = decoded_jws
-        .claim("session_url");
+    let session_url = decoded_jws.claim("session_url");
     let session_url = match session_url {
         Some(session_url) => Some(serde_json::from_value::<String>(session_url.clone())?),
         None => None,
