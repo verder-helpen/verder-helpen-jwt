@@ -1,4 +1,4 @@
-use std::convert::TryFrom;
+use std::{convert::TryFrom, fmt::Debug};
 
 use josekit::{
     jwe::{JweDecrypter, JweEncrypter, ECDH_ES, RSA_OAEP},
@@ -11,9 +11,15 @@ use crate::error::Error;
 //
 // Configuration management
 //
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize)]
 pub struct InnerKeyConfig {
     key: String,
+}
+
+impl Debug for InnerKeyConfig {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("InnerKeyConfig").finish()
+    }
 }
 
 /// Parsable configuration describing an encryption key.
