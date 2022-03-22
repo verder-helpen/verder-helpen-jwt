@@ -125,9 +125,9 @@ mod tests {
             decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
         assert_eq!(in_result, out_result);
 
-        // succes+attributes
+        // success+attributes
         let in_result = AuthResult {
-            status: AuthStatus::Succes,
+            status: AuthStatus::Success,
             attributes: Some(test_attributes.clone()),
             session_url: None,
         };
@@ -137,9 +137,9 @@ mod tests {
             decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
         assert_eq!(in_result, out_result);
 
-        // succes+attributes+session_url
+        // success+attributes+session_url
         let in_result = AuthResult {
-            status: AuthStatus::Succes,
+            status: AuthStatus::Success,
             attributes: Some(test_attributes.clone()),
             session_url: Some("https://example.com".to_string()),
         };
@@ -181,9 +181,9 @@ mod tests {
             decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
         assert_eq!(in_result, out_result);
 
-        // succes+attributes
+        // success+attributes
         let in_result = AuthResult {
-            status: AuthStatus::Succes,
+            status: AuthStatus::Success,
             attributes: Some(test_attributes.clone()),
             session_url: None,
         };
@@ -193,9 +193,9 @@ mod tests {
             decrypt_and_verify_auth_result(&jwe, verifier.as_ref(), decrypter.as_ref()).unwrap();
         assert_eq!(in_result, out_result);
 
-        // succes+attributes+session_url
+        // success+attributes+session_url
         let in_result = AuthResult {
-            status: AuthStatus::Succes,
+            status: AuthStatus::Success,
             attributes: Some(test_attributes.clone()),
             session_url: Some("https://example.com".to_string()),
         };
