@@ -8,9 +8,9 @@ edition = "2018"
 
 [dependencies]
 verder-helpen-proto = { git = "https://github.com/verder-helpen/verder-helpen-proto.git" }
-serde = { version = "1.0.136", features = [ "derive" ] }
-serde_json = "1.0.79"
+serde = { version = "1.0.137", features = [ "derive" ] }
+serde_json = "1.0.81"
 josekit = "0.8.0"
 
 [dev-dependencies]
-serde_yaml = "0.8.23"
+serde_yaml = "0.8.24"
