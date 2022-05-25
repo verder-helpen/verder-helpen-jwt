@@ -1,4 +1,4 @@
-//! id-contact-jwe provides basic utilities for manipulating and creating ID-Contact jwes from rust.
+//! verder-helpen-jwt provides basic utilities for manipulating and creating Verder Helpen JWTs from rust.
 
 mod config;
 mod error;
@@ -22,7 +22,7 @@ mod tests {
     use std::collections::HashMap;
     use std::convert::TryFrom;
 
-    use id_contact_proto::{AuthResult, AuthStatus};
+    use verder_helpen_proto::{AuthResult, AuthStatus};
     use josekit::{
         jwe::{JweDecrypter, JweEncrypter},
         jws::{JwsSigner, JwsVerifier},

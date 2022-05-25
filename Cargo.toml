@@ -1,5 +1,5 @@
 [package]
-name = "id-contact-jwt"
+name = "verder-helpen-jwt"
 version = "0.1.0"
 authors = ["David Venhoek <david@tweedegolf.com>"]
 edition = "2018"
@@ -7,7 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-id-contact-proto = { git = "https://github.com/id-contact/id-contact-proto.git" }
+verder-helpen-proto = { git = "https://github.com/verder-helpen/verder-helpen-proto.git" }
 serde = { version = "1.0.136", features = [ "derive" ] }
 serde_json = "1.0.79"
 josekit = "0.8.0"

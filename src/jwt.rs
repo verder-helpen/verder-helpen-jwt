@@ -6,7 +6,7 @@ use josekit::{
     jwt::{self, JwtPayload, JwtPayloadValidator},
 };
 
-use id_contact_proto::{AuthResult, AuthStatus};
+use verder_helpen_proto::{AuthResult, AuthStatus};
 
 use crate::error::Error;
 
@@ -23,7 +23,7 @@ pub fn sign_and_encrypt_auth_result(
     let mut sig_header = JwsHeader::new();
     sig_header.set_token_type("JWT");
     let mut sig_payload = JwtPayload::new();
-    sig_payload.set_subject("id-contact-attributes");
+    sig_payload.set_subject("verder-helpen-attributes");
     sig_payload.set_claim("status", Some(serde_json::to_value(&auth_result.status)?))?;
     if let Some(attributes) = &auth_result.attributes {
         sig_payload.set_claim("attributes", Some(serde_json::to_value(attributes)?))?;
