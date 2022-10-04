@@ -22,11 +22,11 @@ mod tests {
     use std::collections::HashMap;
     use std::convert::TryFrom;
 
-    use verder_helpen_proto::{AuthResult, AuthStatus};
     use josekit::{
         jwe::{JweDecrypter, JweEncrypter},
         jws::{JwsSigner, JwsVerifier},
     };
+    use verder_helpen_proto::{AuthResult, AuthStatus};
 
     const RSA_PUBKEY: &str = r"
     type: RSA
