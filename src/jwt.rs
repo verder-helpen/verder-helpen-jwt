@@ -1,14 +1,12 @@
-use std::collections::HashMap;
+use crate::error::Error;
 
 use josekit::{
     jwe::{JweDecrypter, JweEncrypter, JweHeader},
     jws::{JwsHeader, JwsSigner, JwsVerifier},
     jwt::{self, JwtPayload, JwtPayloadValidator},
 };
-
+use std::collections::HashMap;
 use verder_helpen_proto::{AuthResult, AuthStatus};
-
-use crate::error::Error;
 
 //
 // Jwe manipulation

@@ -29,7 +29,7 @@ impl Display for Error {
         match self {
             Error::Json(e) => e.fmt(f),
             Error::JWT(e) => e.fmt(f),
-            Error::InvalidStructure => f.write_str("Incorrect jwe structure"),
+            Error::InvalidStructure => f.write_str("Incorrect JWE structure"),
         }
     }
 }
