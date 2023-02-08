@@ -209,30 +209,30 @@ mod tests {
     #[test]
     fn test_log_hiding_rsa() {
         let dec_config: EncryptionKeyConfig = serde_yaml::from_str(RSA_PRIVKEY).unwrap();
-        assert_eq!(format!("{:?}", dec_config), "RSA(InnerKeyConfig)");
+        assert_eq!(format!("{dec_config:?}"), "RSA(InnerKeyConfig)");
 
         let decrypter = Box::<dyn JweDecrypter>::try_from(dec_config).unwrap();
-        assert_eq!(format!("{:?}", decrypter), "RsaesJweDecrypter { algorithm: RsaOaep, private_key: PKey { algorithm: \"RSA\" }, key_id: None }");
+        assert_eq!(format!("{decrypter:?}"), "RsaesJweDecrypter { algorithm: RsaOaep, private_key: PKey { algorithm: \"RSA\" }, key_id: None }");
 
         let sig_config: SignKeyConfig = serde_yaml::from_str(RSA_PRIVKEY).unwrap();
-        assert_eq!(format!("{:?}", sig_config), "RSA(InnerKeyConfig)");
+        assert_eq!(format!("{sig_config:?}"), "RSA(InnerKeyConfig)");
 
         let signer = Box::<dyn JwsSigner>::try_from(sig_config).unwrap();
-        assert_eq!(format!("{:?}", signer), "RsassaJwsSigner { algorithm: Rs256, private_key: PKey { algorithm: \"RSA\" }, key_id: None }")
+        assert_eq!(format!("{signer:?}"), "RsassaJwsSigner { algorithm: Rs256, private_key: PKey { algorithm: \"RSA\" }, key_id: None }")
     }
 
     #[test]
     fn test_log_hiding_ec() {
         let dec_config: EncryptionKeyConfig = serde_yaml::from_str(EC_PRIVKEY).unwrap();
-        assert_eq!(format!("{:?}", dec_config), "EC(InnerKeyConfig)");
+        assert_eq!(format!("{dec_config:?}"), "EC(InnerKeyConfig)");
 
         let decrypter = Box::<dyn JweDecrypter>::try_from(dec_config).unwrap();
-        assert_eq!(format!("{:?}", decrypter), "EcdhEsJweDecrypter { algorithm: EcdhEs, private_key: PKey { algorithm: \"EC\" }, key_type: Ec(P256), key_id: None }");
+        assert_eq!(format!("{decrypter:?}"), "EcdhEsJweDecrypter { algorithm: EcdhEs, private_key: PKey { algorithm: \"EC\" }, key_type: Ec(P256), key_id: None }");
 
         let sig_config: SignKeyConfig = serde_yaml::from_str(EC_PRIVKEY).unwrap();
-        assert_eq!(format!("{:?}", sig_config), "EC(InnerKeyConfig)");
+        assert_eq!(format!("{sig_config:?}"), "EC(InnerKeyConfig)");
 
         let signer = Box::<dyn JwsSigner>::try_from(sig_config).unwrap();
-        assert_eq!(format!("{:?}", signer), "EcdsaJwsSigner { algorithm: Es256, private_key: PKey { algorithm: \"EC\" }, key_id: None }")
+        assert_eq!(format!("{signer:?}"), "EcdsaJwsSigner { algorithm: Es256, private_key: PKey { algorithm: \"EC\" }, key_id: None }")
     }
 }

@@ -36,8 +36,8 @@ impl TryFrom<EncryptionKeyConfig> for Box<dyn JweDecrypter> {
 
     fn try_from(value: EncryptionKeyConfig) -> Result<Box<dyn JweDecrypter>, Error> {
         match value {
-            EncryptionKeyConfig::RSA(key) => Ok(Box::new(RSA_OAEP.decrypter_from_pem(&key.key)?)),
-            EncryptionKeyConfig::EC(key) => Ok(Box::new(ECDH_ES.decrypter_from_pem(&key.key)?)),
+            EncryptionKeyConfig::RSA(key) => Ok(Box::new(RSA_OAEP.decrypter_from_pem(key.key)?)),
+            EncryptionKeyConfig::EC(key) => Ok(Box::new(ECDH_ES.decrypter_from_pem(key.key)?)),
         }
     }
 }
@@ -47,8 +47,8 @@ impl TryFrom<EncryptionKeyConfig> for Box<dyn JweEncrypter> {
 
     fn try_from(value: EncryptionKeyConfig) -> Result<Box<dyn JweEncrypter>, Error> {
         match value {
-            EncryptionKeyConfig::RSA(key) => Ok(Box::new(RSA_OAEP.encrypter_from_pem(&key.key)?)),
-            EncryptionKeyConfig::EC(key) => Ok(Box::new(ECDH_ES.encrypter_from_pem(&key.key)?)),
+            EncryptionKeyConfig::RSA(key) => Ok(Box::new(RSA_OAEP.encrypter_from_pem(key.key)?)),
+            EncryptionKeyConfig::EC(key) => Ok(Box::new(ECDH_ES.encrypter_from_pem(key.key)?)),
         }
     }
 }
@@ -67,8 +67,8 @@ impl TryFrom<SignKeyConfig> for Box<dyn JwsVerifier> {
 
     fn try_from(value: SignKeyConfig) -> Result<Box<dyn JwsVerifier>, Error> {
         match value {
-            SignKeyConfig::RSA(key) => Ok(Box::new(RS256.verifier_from_pem(&key.key)?)),
-            SignKeyConfig::EC(key) => Ok(Box::new(ES256.verifier_from_pem(&key.key)?)),
+            SignKeyConfig::RSA(key) => Ok(Box::new(RS256.verifier_from_pem(key.key)?)),
+            SignKeyConfig::EC(key) => Ok(Box::new(ES256.verifier_from_pem(key.key)?)),
         }
     }
 }
@@ -78,8 +78,8 @@ impl TryFrom<SignKeyConfig> for Box<dyn JwsSigner> {
 
     fn try_from(value: SignKeyConfig) -> Result<Box<dyn JwsSigner>, Error> {
         match value {
-            SignKeyConfig::RSA(key) => Ok(Box::new(RS256.signer_from_pem(&key.key)?)),
-            SignKeyConfig::EC(key) => Ok(Box::new(ES256.signer_from_pem(&key.key)?)),
+            SignKeyConfig::RSA(key) => Ok(Box::new(RS256.signer_from_pem(key.key)?)),
+            SignKeyConfig::EC(key) => Ok(Box::new(ES256.signer_from_pem(key.key)?)),
         }
     }
 }
