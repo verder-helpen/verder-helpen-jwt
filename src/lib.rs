@@ -1,4 +1,5 @@
-//! verder-helpen-jwt provides basic utilities for manipulating and creating Verder Helpen JWTs from rust.
+//! verder-helpen-jwt provides basic utilities for manipulating and creating
+//! Verder Helpen JWTs from rust.
 
 mod config;
 mod error;
@@ -11,22 +12,20 @@ pub use jwt::{
     sign_and_encrypt_auth_result,
 };
 
-//
 // Tests
 //
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
-    use std::collections::HashMap;
-    use std::convert::TryFrom;
+    use std::{collections::HashMap, convert::TryFrom};
 
     use josekit::{
         jwe::{JweDecrypter, JweEncrypter},
         jws::{JwsSigner, JwsVerifier},
     };
     use verder_helpen_proto::{AuthResult, AuthStatus};
+
+    use super::*;
 
     const RSA_PUBKEY: &str = r"
     type: RSA
@@ -212,13 +211,21 @@ mod tests {
         assert_eq!(format!("{dec_config:?}"), "RSA(InnerKeyConfig)");
 
         let decrypter = Box::<dyn JweDecrypter>::try_from(dec_config).unwrap();
-        assert_eq!(format!("{decrypter:?}"), "RsaesJweDecrypter { algorithm: RsaOaep, private_key: PKey { algorithm: \"RSA\" }, key_id: None }");
+        assert_eq!(
+            format!("{decrypter:?}"),
+            "RsaesJweDecrypter { algorithm: RsaOaep, private_key: PKey { algorithm: \"RSA\" }, \
+             key_id: None }"
+        );
 
         let sig_config: SignKeyConfig = serde_yaml::from_str(RSA_PRIVKEY).unwrap();
         assert_eq!(format!("{sig_config:?}"), "RSA(InnerKeyConfig)");
 
         let signer = Box::<dyn JwsSigner>::try_from(sig_config).unwrap();
-        assert_eq!(format!("{signer:?}"), "RsassaJwsSigner { algorithm: Rs256, private_key: PKey { algorithm: \"RSA\" }, key_id: None }")
+        assert_eq!(
+            format!("{signer:?}"),
+            "RsassaJwsSigner { algorithm: Rs256, private_key: PKey { algorithm: \"RSA\" }, \
+             key_id: None }"
+        )
     }
 
     #[test]
@@ -227,12 +234,20 @@ mod tests {
         assert_eq!(format!("{dec_config:?}"), "EC(InnerKeyConfig)");
 
         let decrypter = Box::<dyn JweDecrypter>::try_from(dec_config).unwrap();
-        assert_eq!(format!("{decrypter:?}"), "EcdhEsJweDecrypter { algorithm: EcdhEs, private_key: PKey { algorithm: \"EC\" }, key_type: Ec(P256), key_id: None }");
+        assert_eq!(
+            format!("{decrypter:?}"),
+            "EcdhEsJweDecrypter { algorithm: EcdhEs, private_key: PKey { algorithm: \"EC\" }, \
+             key_type: Ec(P256), key_id: None }"
+        );
 
         let sig_config: SignKeyConfig = serde_yaml::from_str(EC_PRIVKEY).unwrap();
         assert_eq!(format!("{sig_config:?}"), "EC(InnerKeyConfig)");
 
         let signer = Box::<dyn JwsSigner>::try_from(sig_config).unwrap();
-        assert_eq!(format!("{signer:?}"), "EcdsaJwsSigner { algorithm: Es256, private_key: PKey { algorithm: \"EC\" }, key_id: None }")
+        assert_eq!(
+            format!("{signer:?}"),
+            "EcdsaJwsSigner { algorithm: Es256, private_key: PKey { algorithm: \"EC\" }, key_id: \
+             None }"
+        )
     }
 }
