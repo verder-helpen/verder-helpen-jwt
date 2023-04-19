@@ -1,6 +1,5 @@
 use std::{error::Error as StdError, fmt::Display};
 
-//
 // Error type definition
 //
 

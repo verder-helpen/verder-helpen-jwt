@@ -8,7 +8,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::Error;
 
-//
 // Configuration management
 //
 #[derive(Serialize, Deserialize)]
@@ -23,7 +22,8 @@ impl Debug for InnerKeyConfig {
 }
 
 /// Parsable configuration describing an encryption key.
-/// This can be cast (using try_from) into the JweDecryptor en JweEncryptor types needed by the jwe functions.
+/// This can be cast (using try_from) into the JweDecryptor en JweEncryptor
+/// types needed by the jwe functions.
 #[derive(Deserialize, Debug)]
 #[serde(tag = "type")]
 pub enum EncryptionKeyConfig {
@@ -54,7 +54,8 @@ impl TryFrom<EncryptionKeyConfig> for Box<dyn JweEncrypter> {
 }
 
 /// Parsable configuration describing a signature key.
-/// This can be cast (using try_from) into the JwsVerifier and JwsSigner types needed by the jwe functions.
+/// This can be cast (using try_from) into the JwsVerifier and JwsSigner types
+/// needed by the jwe functions.
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "type")]
 pub enum SignKeyConfig {

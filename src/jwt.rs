@@ -5,12 +5,10 @@ use josekit::{
     jws::{JwsHeader, JwsSigner, JwsVerifier},
     jwt::{self, JwtPayload, JwtPayloadValidator},
 };
-
 use verder_helpen_proto::{AuthResult, AuthStatus};
 
 use crate::error::Error;
 
-//
 // Jwe manipulation
 //
 
